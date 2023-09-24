@@ -1,10 +1,14 @@
 package application;
 	
+import java.io.*;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -12,20 +16,29 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
 
 
 public class Main extends Application {
-	
+	private static final double buttonSize = 10;
+	private static final String imagePath = "images/";
 	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			Button backButton = new Button();
-			backButton.setText("back");
+			ImageView backArrow = new ImageView(new Image(new FileInputStream(new File(imagePath + "backArrow.png"))));
+			backArrow.setFitWidth(buttonSize);
+			backArrow.setFitHeight(buttonSize);
+			Button backButton = new Button("", backArrow);
 			
-			Button forwardButton = new Button();
-			forwardButton.setText("forward");
+			
+			ImageView forwardArrow = new ImageView(new Image(new FileInputStream(new File(imagePath + "forwardArrow.png"))));
+			forwardArrow.setFitWidth(buttonSize);
+			forwardArrow.setFitHeight(buttonSize);
+			Button forwardButton = new Button("", forwardArrow);
 			
 			TextField websiteInputField = new TextField();
 			websiteInputField.setPromptText("Search with DuckDuckGo or enter address");
@@ -42,8 +55,8 @@ public class Main extends Application {
 			GridPane.setColumnIndex(forwardButton, 1);
 			GridPane.setColumnIndex(websiteInputField, 2);
 			GridPane.setColumnIndex(launchButton, 3);
-			controlPane.getColumnConstraints().add(new ColumnConstraints(50));
-			controlPane.getColumnConstraints().add(new ColumnConstraints(80));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize*3));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize*3));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(400));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(80));
 			
