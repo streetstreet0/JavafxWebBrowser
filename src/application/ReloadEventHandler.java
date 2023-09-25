@@ -7,15 +7,16 @@ import javafx.scene.web.WebEngine;
 
 public class ReloadEventHandler implements EventHandler<ActionEvent> {
 	private TextField websiteInputField;
-	private WebEngine websiteBackEnd;
+	private TabStorer currentTabStorer;
 
-	public ReloadEventHandler(TextField websiteInputField, WebEngine websiteBackEnd) {
+	public ReloadEventHandler(TabStorer currentTabStorer, TextField websiteInputField) {
 		this.websiteInputField = websiteInputField;
-		this.websiteBackEnd = websiteBackEnd;
+		this.currentTabStorer = currentTabStorer;
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
+		WebEngine websiteBackEnd = currentTabStorer.getTab().getWebsiteBackEnd();
 		String currentPage = websiteBackEnd.getLocation();
 		websiteBackEnd.load(currentPage);
 		websiteInputField.setText(currentPage);

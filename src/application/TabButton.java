@@ -5,12 +5,15 @@ import javafx.scene.control.Button;
 public class TabButton extends Button {
 	private Tab tab;
 	
-	public TabButton(Tab tab) {
+	public TabButton(Tab tab, TabVBox mainBox) {
 		this.tab = tab;
-		this.setText(tab.getWebsiteBackEnd().getTitle());
+		tab.setTabButton(this);
+		this.setText("temp");
+		this.setOnAction(new ChangeTabEventHandler(tab, mainBox));
 	}
 	
 	public Tab getTab() {
 		return tab;
 	}
+	
 }

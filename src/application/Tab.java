@@ -1,7 +1,8 @@
 package application;
 
-import javafx.scene.control.Button;
+import javafx.event.EventHandler;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
@@ -9,6 +10,7 @@ public class Tab {
 	private WebView websiteVisual;
 	private WebEngine websiteBackEnd;
 	private WebHistory websiteHistory;
+	private TabButton tabButton;
 	
 	public Tab(String homePage) {
 		this.websiteVisual = new WebView();
@@ -25,5 +27,8 @@ public class Tab {
 	}
 	public WebHistory getWebsiteHistory() {
 		return websiteHistory;
+	}
+	public void setTabButton(TabButton tabButton) {
+		this.tabButton = tabButton;
 	}
 }

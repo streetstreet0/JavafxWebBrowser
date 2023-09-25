@@ -7,19 +7,28 @@ import javafx.scene.web.WebEngine;
 
 public class LoadEventHandler implements EventHandler<ActionEvent> {
 	private TextField textField;
-	private WebEngine websiteBackEnd;
+	private TabStorer currentTabStorer;
 
-	public LoadEventHandler(TextField textField, WebEngine websiteBackEnd) {
+	public LoadEventHandler(TabStorer currentTabStorer, TextField textField) {
 		this.textField = textField;
-		this.websiteBackEnd = websiteBackEnd;
+		this.currentTabStorer = currentTabStorer;
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
 		String url = textField.getText();
-		if (url.startsWith("http:/") || url.startsWith("https:/")) {
+		if (url.startsWith("https:/")) {
 			// its easier to understand this if statement when this is the first case
 			// nothing occurs heres
+		}
+		if (url.startsWith("http:/")) {
+			url = url.replace("http:/", "https:/");
+		}
+		else if (url.startsWith("http:")) {
+			url = url.replace("http:", "https:/");
+		}
+		else if (url.startsWith("https:")) {
+			url = url.replace("https:", "https:/");
 		}
 		else if (url.startsWith("www.")) {
 			url = "https:/" + url;
@@ -69,8 +78,9 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			// now try to search
 			url = "https:/www.duckduckgo.com/?t=ffab&q=" + url + "&ia=web";
 		}
+		WebEngine websiteBackEnd = currentTabStorer.getTab().getWebsiteBackEnd();
 		websiteBackEnd.load(url);
-		textField.setText(websiteBackEnd.getLocation());
+		textField.setText(url);
 	}
 
 }
