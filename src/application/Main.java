@@ -3,6 +3,8 @@ package application;
 import java.io.*;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +17,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -64,22 +68,27 @@ public class Main extends Application {
 			HBox controlPanel = new HBox();
 			controlPanel.getChildren().add(controlPane);
 			
-			// web view is the visual representation of the website
-			WebView currentWebsite = new WebView();
-			// web engine is the back end loading of the website
-			currentWebsite.getEngine().load("https://www.duckduckgo.com");
+			WebView websiteVisual = new WebView();
+			WebEngine websiteBackEnd = websiteVisual.getEngine();
+			websiteBackEnd.load("https://www.duckduckgo.com");
+			WebHistory history = websiteVisual.getEngine().getHistory();
+			
+			backButton.setOnAction(new HistoryEventHandler(history, Direction.BACK));
+			forwardButton.setOnAction(new HistoryEventHandler(history, Direction.FORWARDS));
 			
 			VBox root = new VBox();
 			root.getChildren().add(controlPanel);
-			root.getChildren().add(currentWebsite);
+			root.getChildren().add(websiteVisual);
 			
 			// apparently growth parameters are important
-			VBox.setVgrow(currentWebsite, Priority.ALWAYS);
+			VBox.setVgrow(websiteVisual, Priority.ALWAYS);
 			HBox.setHgrow(websiteInputField, Priority.ALWAYS);
 			
 			
 			Scene scene = new Scene(root);
 			
+			primaryStage.getIcons().add(new Image(new FileInputStream(new File(imagePath + "icon.gif"))));
+			primaryStage.setTitle("Lobster Web Browser");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} 
