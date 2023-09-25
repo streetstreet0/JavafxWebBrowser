@@ -6,7 +6,7 @@ package pagehistory;
  * 
  * The website history of the user is stored as a recursive list.
  */
-public class WebHistory {
+public class WebPageHistory {
 	/**
 	 * The first website the user went to in this session.
 	 */
@@ -21,7 +21,7 @@ public class WebHistory {
 	 * 
 	 * @param webPage The current webpage the user is on.
 	 */
-	public WebHistory(Webpage webPage) {
+	public WebPageHistory(Webpage webPage) {
 		this.first = webPage;
 		this.current = webPage;
 	}
