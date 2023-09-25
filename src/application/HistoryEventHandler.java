@@ -7,20 +7,20 @@ import javafx.scene.web.WebHistory;
 import javafx.event.ActionEvent;
 
 public class HistoryEventHandler implements EventHandler<ActionEvent> {
-	private WebHistory history;
+	private TabStorer currentTabStorer;
 	private Direction direction;
 	private TextField textField;
-	private WebEngine websiteBackEnd;
 	
-	public HistoryEventHandler(WebHistory history, Direction direction, TextField textField, WebEngine websiteBackEnd) {
-		this.history = history;
+	public HistoryEventHandler(TabStorer currentTabStorer, Direction direction, TextField textField) {
+		this.currentTabStorer = currentTabStorer;
 		this.direction = direction;
 		this.textField = textField;
-		this.websiteBackEnd = websiteBackEnd;
 	}
 	
 	@Override
 	public void handle(ActionEvent event) {
+		WebEngine websiteBackEnd = currentTabStorer.getTab().getWebsiteBackEnd();
+		WebHistory history = websiteBackEnd.getHistory();
 		if (direction == Direction.FORWARDS) {
 			if (history.getCurrentIndex() < history.getEntries().size() - 1) {
 				history.go(1);

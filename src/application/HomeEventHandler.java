@@ -7,19 +7,20 @@ import javafx.scene.web.WebEngine;
 
 public class HomeEventHandler implements EventHandler<ActionEvent> {
 	private TextField websiteInputField;
-	private WebEngine websiteBackEnd;
+	private TabStorer currentTabStorer;
 	private String homePage;
 
-	public HomeEventHandler(TextField websiteInputField, WebEngine websiteBackEnd, String homePage) {
+	public HomeEventHandler(TabStorer currentTabStorer, String homePage, TextField websiteInputField) {
 		this.websiteInputField = websiteInputField;
-		this.websiteBackEnd = websiteBackEnd;
+		this.currentTabStorer = currentTabStorer;
 		this.homePage = homePage;
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
+		WebEngine websiteBackEnd = currentTabStorer.getTab().getWebsiteBackEnd();
 		websiteBackEnd.load(homePage);
-		websiteInputField.setText(websiteBackEnd.getLocation());
+		websiteInputField.setText(homePage);
 	}
 
 }

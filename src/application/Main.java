@@ -32,12 +32,19 @@ public class Main extends Application {
 	private static final String imagePath = "images/";
 	private static final String homePage = "https://www.duckduckgo.com";
 	private ArrayList<TabButton> tabButtons;
-	private int currentTabIndex;
+	public TabStorer currentTabStorer;
 	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
+			// initialise these variables now, add their fields to them later
+			currentTabStorer = new TabStorer();
+			TabVBox mainBox = new TabVBox(currentTabStorer);
+			
+			
+			
+			
 			ImageView backArrow = new ImageView(new Image(new FileInputStream(new File(imagePath + "backArrow.png"))));
 			backArrow.setFitWidth(buttonImageSize);
 			backArrow.setFitHeight(buttonImageSize);
@@ -61,6 +68,7 @@ public class Main extends Application {
 			
 			TextField websiteInputField = new TextField();
 			websiteInputField.setPromptText("Search with DuckDuckGo or enter address");
+			mainBox.setTextField(websiteInputField);
 			
 			Button launchButton = new Button();
 			launchButton.setText("launch");
@@ -94,24 +102,47 @@ public class Main extends Application {
 			websiteBackEnd.load(homePage);
 			WebHistory history = websiteVisual.getEngine().getHistory();
 			
-			backButton.setOnAction(new HistoryEventHandler(history, Direction.BACK, websiteInputField, websiteBackEnd));
-			forwardButton.setOnAction(new HistoryEventHandler(history, Direction.FORWARDS, websiteInputField, websiteBackEnd));
-			homeButton.setOnAction(new HomeEventHandler(websiteInputField, websiteBackEnd, homePage));
-			reloadButton.setOnAction(new ReloadEventHandler(websiteInputField, websiteBackEnd));
-			launchButton.setOnAction(new LoadEventHandler(websiteInputField, websiteBackEnd));
+			backButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.BACK, websiteInputField));
+			forwardButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.FORWARDS, websiteInputField));
+			homeButton.setOnAction(new HomeEventHandler(currentTabStorer, homePage, websiteInputField));
+			reloadButton.setOnAction(new ReloadEventHandler(currentTabStorer, websiteInputField));
+			launchButton.setOnAction(new LoadEventHandler(currentTabStorer, websiteInputField));
+			
+			
+			
+			
+			tabButtons = new ArrayList<TabButton>();
+			Tab defaultTab = new Tab(homePage);
+			currentTabStorer.setTab(defaultTab);
+			mainBox.setInitialTab(defaultTab);
+			//mainBox.switchTab(defaultTab);
+			TabButton defaultTabButton = new TabButton(defaultTab, mainBox);
+			tabButtons.add(defaultTabButton);
+			
+			ImageView addTabSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "addTabSymbol.png"))));
+			addTabSymbol.setFitWidth(buttonImageSize);
+			addTabSymbol.setFitHeight(buttonImageSize);
+			Button addTabButton = new Button("", addTabSymbol);
+			
+			
+			GridPane tabPane = new GridPane();
+			tabPane.getChildren().add(defaultTabButton);
+			tabPane.getChildren().add(addTabButton);
+			GridPane.setColumnIndex(defaultTabButton, 0);
+			GridPane.setColumnIndex(addTabButton, 1);
 			
 			HBox tabPanel = new HBox();
-			GridPane tabPane = new GridPane();
 			tabPanel.getChildren().add(tabPane);
-			TabButton defaultTab = new TabButton(new Tab(homePage));
-			tabPane.getChildren().add(defaultTab);
 			
 			
-			
-			VBox mainBox = new VBox();
 			mainBox.getChildren().add(controlPanel);
 			mainBox.getChildren().add(tabPanel);
 			mainBox.getChildren().add(websiteVisual);
+			
+			addTabButton.setOnAction(new AddTabEventHandler(tabButtons, homePage, tabPane, addTabButton, mainBox));
+			
+			
+			
 			
 			// apparently growth parameters are important
 			VBox.setVgrow(websiteVisual, Priority.ALWAYS);
