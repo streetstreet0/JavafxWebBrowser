@@ -1,6 +1,7 @@
 package application;
 	
 import java.io.*;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -26,23 +27,37 @@ import javafx.scene.layout.BackgroundRepeat;
 
 
 public class Main extends Application {
-	private static final double buttonSize = 10;
+	private static final double buttonImageSize = 10;
+	private static final double buttonSize = 30;
 	private static final String imagePath = "images/";
+	private static final String homePage = "https://www.duckduckgo.com";
+	private ArrayList<TabButton> tabButtons;
+	private int currentTabIndex;
 	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			ImageView backArrow = new ImageView(new Image(new FileInputStream(new File(imagePath + "backArrow.png"))));
-			backArrow.setFitWidth(buttonSize);
-			backArrow.setFitHeight(buttonSize);
+			backArrow.setFitWidth(buttonImageSize);
+			backArrow.setFitHeight(buttonImageSize);
 			Button backButton = new Button("", backArrow);
 			
 			
 			ImageView forwardArrow = new ImageView(new Image(new FileInputStream(new File(imagePath + "forwardArrow.png"))));
-			forwardArrow.setFitWidth(buttonSize);
-			forwardArrow.setFitHeight(buttonSize);
+			forwardArrow.setFitWidth(buttonImageSize);
+			forwardArrow.setFitHeight(buttonImageSize);
 			Button forwardButton = new Button("", forwardArrow);
+			
+			ImageView homeSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "homeSymbol.png"))));
+			homeSymbol.setFitWidth(buttonImageSize);
+			homeSymbol.setFitHeight(buttonImageSize);
+			Button homeButton = new Button("", homeSymbol);
+			
+			ImageView reloadSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "reloadSymbol.png"))));
+			reloadSymbol.setFitWidth(buttonImageSize);
+			reloadSymbol.setFitHeight(buttonImageSize);
+			Button reloadButton = new Button("", reloadSymbol);
 			
 			TextField websiteInputField = new TextField();
 			websiteInputField.setPromptText("Search with DuckDuckGo or enter address");
@@ -53,14 +68,20 @@ public class Main extends Application {
 			GridPane controlPane = new GridPane();
 			controlPane.getChildren().add(backButton);
 			controlPane.getChildren().add(forwardButton);
+			controlPane.getChildren().add(homeButton);
+			controlPane.getChildren().add(reloadButton);
 			controlPane.getChildren().add(websiteInputField);
 			controlPane.getChildren().add(launchButton);
 			GridPane.setColumnIndex(backButton, 0);
 			GridPane.setColumnIndex(forwardButton, 1);
-			GridPane.setColumnIndex(websiteInputField, 2);
-			GridPane.setColumnIndex(launchButton, 3);
-			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize*3));
-			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize*3));
+			GridPane.setColumnIndex(homeButton, 2);
+			GridPane.setColumnIndex(reloadButton, 3);
+			GridPane.setColumnIndex(websiteInputField, 4);
+			GridPane.setColumnIndex(launchButton, 5);
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(400));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(80));
 			
@@ -70,15 +91,26 @@ public class Main extends Application {
 			
 			WebView websiteVisual = new WebView();
 			WebEngine websiteBackEnd = websiteVisual.getEngine();
-			websiteBackEnd.load("https://www.duckduckgo.com");
+			websiteBackEnd.load(homePage);
 			WebHistory history = websiteVisual.getEngine().getHistory();
 			
 			backButton.setOnAction(new HistoryEventHandler(history, Direction.BACK, websiteInputField, websiteBackEnd));
 			forwardButton.setOnAction(new HistoryEventHandler(history, Direction.FORWARDS, websiteInputField, websiteBackEnd));
+			homeButton.setOnAction(new HomeEventHandler(websiteInputField, websiteBackEnd, homePage));
+			reloadButton.setOnAction(new ReloadEventHandler(websiteInputField, websiteBackEnd));
 			launchButton.setOnAction(new LoadEventHandler(websiteInputField, websiteBackEnd));
+			
+			HBox tabPanel = new HBox();
+			GridPane tabPane = new GridPane();
+			tabPanel.getChildren().add(tabPane);
+			TabButton defaultTab = new TabButton(new Tab(homePage));
+			tabPane.getChildren().add(defaultTab);
+			
+			
 			
 			VBox mainBox = new VBox();
 			mainBox.getChildren().add(controlPanel);
+			mainBox.getChildren().add(tabPanel);
 			mainBox.getChildren().add(websiteVisual);
 			
 			// apparently growth parameters are important
