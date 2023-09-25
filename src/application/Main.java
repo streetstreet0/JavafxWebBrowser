@@ -73,19 +73,20 @@ public class Main extends Application {
 			websiteBackEnd.load("https://www.duckduckgo.com");
 			WebHistory history = websiteVisual.getEngine().getHistory();
 			
-			backButton.setOnAction(new HistoryEventHandler(history, Direction.BACK));
-			forwardButton.setOnAction(new HistoryEventHandler(history, Direction.FORWARDS));
+			backButton.setOnAction(new HistoryEventHandler(history, Direction.BACK, websiteInputField, websiteBackEnd));
+			forwardButton.setOnAction(new HistoryEventHandler(history, Direction.FORWARDS, websiteInputField, websiteBackEnd));
+			launchButton.setOnAction(new LoadEventHandler(websiteInputField, websiteBackEnd));
 			
-			VBox root = new VBox();
-			root.getChildren().add(controlPanel);
-			root.getChildren().add(websiteVisual);
+			VBox mainBox = new VBox();
+			mainBox.getChildren().add(controlPanel);
+			mainBox.getChildren().add(websiteVisual);
 			
 			// apparently growth parameters are important
 			VBox.setVgrow(websiteVisual, Priority.ALWAYS);
 			HBox.setHgrow(websiteInputField, Priority.ALWAYS);
 			
 			
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(mainBox);
 			
 			primaryStage.getIcons().add(new Image(new FileInputStream(new File(imagePath + "icon.gif"))));
 			primaryStage.setTitle("Lobster Web Browser");
