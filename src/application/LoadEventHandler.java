@@ -45,9 +45,9 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			url = url.replace("+", "%2B");
 			url = url.replace("`", "%60");
 			// - does not need encoding
-			url = url.replace("=", "%2B");
+			url = url.replace("=", "%3D");
 			url = url.replace("{", "%7B");
-			url = url.replace("}", "%2D");
+			url = url.replace("}", "%7D");
 			url = url.replace("|", "%7C");
 			url = url.replace("[", "%5B");
 			url = url.replace("]", "%5D");
@@ -58,7 +58,6 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			url = url.replace("\"", "%22");
 			url = url.replace(";", "%3B");
 			// note: \' puts ' inside a string
-			url = url.replace("\'", "%2B");
 			url = url.replace("\'", "%27");
 			url = url.replace("<", "%3C");
 			url = url.replace(">", "%3E");
@@ -66,7 +65,7 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			url = url.replace(",", "%2C");
 			// . does not need encoding
 			url = url.replace("/", "%2F");
-			url = url.replace(" ", "+");
+			url = url.replace(" ", "%20");
 			// now try to search
 			url = "https:/www.duckduckgo.com/?t=ffab&q=" + url + "&ia=web";
 		}
