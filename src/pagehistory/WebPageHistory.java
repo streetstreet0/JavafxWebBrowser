@@ -5,6 +5,7 @@ package pagehistory;
  * <p>
  * 
  * The website history of the user is stored as a recursive list.
+ * @deprecated
  */
 public class WebPageHistory {
 	/**

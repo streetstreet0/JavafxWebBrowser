@@ -20,6 +20,20 @@ public class Tab {
 		websiteBackEnd.load(homePage);
 	}
 	
+// 	.clone() is not supported in WebView, so this method cannot work
+//	private Tab(WebView websiteVisual) {
+//		this.websiteVisual = websiteVisual.clone();
+//		this.websiteBackEnd = websiteVisual.getEngine();
+//		this.websiteHistory = websiteBackEnd.getHistory();
+//		this.tabButton = null;
+//	}
+	
+//	.clone() is not supported in WebView, so this method 
+//	@Override
+//	public Tab clone() {
+//		return new Tab(websiteVisual);
+//	}
+	
 	public WebView getWebsiteVisual() {
 		return websiteVisual;
 	}
