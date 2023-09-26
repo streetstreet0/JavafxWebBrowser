@@ -21,7 +21,7 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			// its easier to understand this if statement when this is the first case
 			// nothing occurs heres
 		}
-		if (url.startsWith("http:/")) {
+		else if (url.startsWith("http:/")) {
 			url = url.replace("http:/", "https:/");
 		}
 		else if (url.startsWith("http:")) {
@@ -78,8 +78,7 @@ public class LoadEventHandler implements EventHandler<ActionEvent> {
 			// now try to search
 			url = "https:/www.duckduckgo.com/?t=ffab&q=" + url + "&ia=web";
 		}
-		WebEngine websiteBackEnd = currentTabStorer.getTab().getWebsiteBackEnd();
-		websiteBackEnd.load(url);
+		currentTabStorer.getTab().getWebsiteBackEnd().load(url);
 		textField.setText(url);
 	}
 
