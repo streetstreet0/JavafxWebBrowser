@@ -5,30 +5,38 @@ import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 
 public class AddTabEventHandler implements EventHandler<ActionEvent> {
-	private ArrayList<TabButton> tabButtons;
+	private ModifiableObservableTabList tabs;
 	private String homePage;
 	private Button addTabButton;
 	private GridPane tabPane;
 	private TabVBox mainBox;
+	private ComboBox<Tab> selectTabBox;
 
-	public AddTabEventHandler(ArrayList<TabButton> tabButtons, String homePage, GridPane tabPane, Button addTabButton, TabVBox mainBox) {
-		this.tabButtons = tabButtons;
-		this.homePage = homePage;
-		this.addTabButton = addTabButton;
-		this.tabPane = tabPane;
+	public AddTabEventHandler(TabVBox mainBox) {
+		this.homePage = mainBox.getHomePage();
+		this.addTabButton = mainBox.getAddTabButton();
+		this.tabPane = mainBox.getTabPane();
 		this.mainBox = mainBox;
+		this.tabs = mainBox.getTabs();
+		this.selectTabBox = mainBox.getSelectTabBox();
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
-		TabButton tabButton = new TabButton(new Tab(homePage), mainBox);
-		tabButtons.add(tabButton);
+		Tab newTab = new Tab(homePage);
+		// tabButton automatically assigns itself at newTab's button
+		TabButton tabButton = new TabButton(newTab, mainBox);
 		tabPane.getChildren().add(tabButton);
-		GridPane.setColumnIndex(tabButton, tabButtons.size()-1);
-		GridPane.setColumnIndex(addTabButton, tabButtons.size());
+		// need to add newTab to the list after setting its column index
+		GridPane.setColumnIndex(tabButton, tabs.size());
+		GridPane.setColumnIndex(addTabButton, tabs.size()+1);
+		GridPane.setColumnIndex(selectTabBox, tabs.size()+2);
+		tabs.add(newTab);
+		mainBox.switchTab(newTab);
 	}
 
 }

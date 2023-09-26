@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +25,7 @@ import javafx.scene.web.WebView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundRepeat;
+import javafx.collections.*;
 
 
 public class Main extends Application {
@@ -31,7 +33,7 @@ public class Main extends Application {
 	private static final double buttonSize = 30;
 	private static final String imagePath = "images/";
 	private static final String homePage = "https://www.duckduckgo.com";
-	private ArrayList<TabButton> tabButtons;
+	private ModifiableObservableTabList tabsList;
 	public TabStorer currentTabStorer;
 	
 	
@@ -40,7 +42,8 @@ public class Main extends Application {
 		try {
 			// initialise these variables now, add their fields to them later
 			currentTabStorer = new TabStorer();
-			TabVBox mainBox = new TabVBox(currentTabStorer);
+			tabsList = new ModifiableObservableTabList();
+			TabVBox mainBox = new TabVBox(currentTabStorer, tabsList, homePage);
 			
 			
 			
@@ -98,9 +101,7 @@ public class Main extends Application {
 			controlPanel.getChildren().add(controlPane);
 			
 			WebView websiteVisual = new WebView();
-			WebEngine websiteBackEnd = websiteVisual.getEngine();
-			websiteBackEnd.load(homePage);
-			WebHistory history = websiteVisual.getEngine().getHistory();
+			websiteVisual.getEngine().load(homePage);
 			
 			backButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.BACK, websiteInputField));
 			forwardButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.FORWARDS, websiteInputField));
@@ -111,25 +112,37 @@ public class Main extends Application {
 			
 			
 			
-			tabButtons = new ArrayList<TabButton>();
-			Tab defaultTab = new Tab(homePage);
-			currentTabStorer.setTab(defaultTab);
-			mainBox.setInitialTab(defaultTab);
-			//mainBox.switchTab(defaultTab);
-			TabButton defaultTabButton = new TabButton(defaultTab, mainBox);
-			tabButtons.add(defaultTabButton);
-			
 			ImageView addTabSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "addTabSymbol.png"))));
 			addTabSymbol.setFitWidth(buttonImageSize);
 			addTabSymbol.setFitHeight(buttonImageSize);
 			Button addTabButton = new Button("", addTabSymbol);
+			mainBox.setAddTabButton(addTabButton);
+			
+			ComboBox<Tab> selectTabBox = new ComboBox<Tab>(tabsList);
+			selectTabBox.setPromptText("delete tab:");
+			mainBox.setSelectTabBox(selectTabBox);
+			
+			Tab defaultTab = new Tab(homePage);
+			currentTabStorer.setTab(defaultTab);
+			mainBox.setInitialTab(defaultTab);
+			//mainBox.switchTab(defaultTab);
 			
 			
 			GridPane tabPane = new GridPane();
+			mainBox.setTabPane(tabPane);
+			
+			// default tab must be mad after the tabPane is added the mainBox
+			TabButton defaultTabButton = new TabButton(defaultTab, mainBox);
+			tabsList.add(defaultTabButton.getTab());
+			
+			
 			tabPane.getChildren().add(defaultTabButton);
 			tabPane.getChildren().add(addTabButton);
+			tabPane.getChildren().add(selectTabBox);
 			GridPane.setColumnIndex(defaultTabButton, 0);
 			GridPane.setColumnIndex(addTabButton, 1);
+			GridPane.setColumnIndex(selectTabBox, 2);
+			
 			
 			HBox tabPanel = new HBox();
 			tabPanel.getChildren().add(tabPane);
@@ -139,8 +152,7 @@ public class Main extends Application {
 			mainBox.getChildren().add(tabPanel);
 			mainBox.getChildren().add(websiteVisual);
 			
-			addTabButton.setOnAction(new AddTabEventHandler(tabButtons, homePage, tabPane, addTabButton, mainBox));
-			
+			addTabButton.setOnAction(new AddTabEventHandler(mainBox));
 			
 			
 			
