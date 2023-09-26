@@ -96,5 +96,6 @@ public class TabVBox extends VBox {
 		this.currentTabStorer.setTab(newTab);
 		this.getChildren().add(newTab.getWebsiteVisual());
 		textField.setText(newTab.getWebsiteBackEnd().getLocation());
+		selectTabBox.setValue(newTab);
 	}
 }

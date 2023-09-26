@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javafx.collections.ModifiableObservableListBase;
 
 public class ModifiableObservableTabList extends ModifiableObservableListBase<Tab> {
-	private final ArrayList<Tab> tabButtons = new ArrayList<Tab>();
+	private final ArrayList<Tab> tabs = new ArrayList<Tab>();
 	
 	public ModifiableObservableTabList() {
 		super();
@@ -13,27 +13,29 @@ public class ModifiableObservableTabList extends ModifiableObservableListBase<Ta
 
 	@Override
 	public int size() {
-		return tabButtons.size();
+		return tabs.size();
 	}
 
 	@Override
 	protected void doAdd(int index, Tab tabName) {
-		tabButtons.add(index, tabName);
+		tabs.add(index, tabName);
 	}
 
+	// Don't use this
 	@Override
 	protected Tab doSet(int index, Tab tabName) {
-		return tabButtons.set(index, tabName);
+		return tabs.set(index, tabName);
 	}
 
+	// Don't use this
 	@Override
 	protected Tab doRemove(int index) {
-		return tabButtons.remove(index);
+		return tabs.remove(index);
 	}
 
 	@Override
 	public Tab get(int index) {
-		return tabButtons.get(index);
+		return tabs.get(index);
 	}
 
 }

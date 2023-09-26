@@ -34,8 +34,8 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 		// need to add newTab to the list after setting its column index
 		GridPane.setColumnIndex(tabButton, tabs.size());
 		GridPane.setColumnIndex(addTabButton, tabs.size()+1);
-		GridPane.setColumnIndex(selectTabBox, tabs.size()+2);
 		tabs.add(newTab);
+		selectTabBox.setVisibleRowCount(Math.min(selectTabBox.getItems().size(), 5));
 		mainBox.switchTab(newTab);
 	}
 

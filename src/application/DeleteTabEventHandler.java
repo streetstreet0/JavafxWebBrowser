@@ -50,7 +50,7 @@ public class DeleteTabEventHandler implements EventHandler<ActionEvent> {
 					mainBox.switchTab(tabs.get(newCurrentTabIndex));
 				}
 				tabPane.getChildren().remove(tab.getTabButton());
-				tabs.doRemove(i);
+				tabs.remove(i);
 				deletedIndex = i;
 				break;
 			}
@@ -63,6 +63,6 @@ public class DeleteTabEventHandler implements EventHandler<ActionEvent> {
 			GridPane.setColumnIndex(tab.getTabButton(), i);
 		}
 		GridPane.setColumnIndex(addTabButton, tabs.size());
-		GridPane.setColumnIndex(selectTabBox, tabs.size()+1);
+		selectTabBox.setVisibleRowCount(Math.min(selectTabBox.getItems().size(), 5));
 	}
 }
