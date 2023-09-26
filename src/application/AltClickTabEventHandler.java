@@ -30,46 +30,11 @@ public class AltClickTabEventHandler implements EventHandler<MouseEvent> {
 	@Override
 	public void handle(MouseEvent event) {
 		if (event.getButton().toString().equals("MIDDLE")) {
-			deleteTab();
+			new DeleteTabEventHandler(tab, mainBox).handle(new ActionEvent());
+		}
+		else if (event.getButton().toString().equals("SECONDARY")) {
+			TabButton tabButton = tab.getTabButton();
+			tab.getTabButton().getContextMenu().show(tabButton, tabButton.getLayoutX(), tabButton.getLayoutY());
 		}
 	}
-	
-	private void deleteTab() {
-		if (tabs.size() == 1) {
-			tabs.remove(0);
-			addTabHandler.handle(new ActionEvent());
-			return;
-		}
-		
-		int deletedIndex = -1;
-		for (int i=0; i<tabs.size(); i++) {
-			Tab tabInList = tabs.get(i);
-			if (tabInList.equals(tab)) {
-				if (mainBox.getCurrentTab().equals(tab)) {
-					int newCurrentTabIndex;
-					if (i == 0) {
-						newCurrentTabIndex = 1;
-					}
-					else {
-						newCurrentTabIndex = i-1;
-					}
-					mainBox.switchTab(tabs.get(newCurrentTabIndex));
-				}
-				tabPane.getChildren().remove(tab.getTabButton());
-				tabs.doRemove(i);
-				deletedIndex = i;
-				break;
-			}
-		}
-		if (deletedIndex == -1) {
-			return;
-		}
-		for (int i=deletedIndex; i<tabs.size(); i++) {
-			Tab tab = tabs.get(i);
-			GridPane.setColumnIndex(tab.getTabButton(), i);
-		}
-		GridPane.setColumnIndex(addTabButton, tabs.size());
-		GridPane.setColumnIndex(selectTabBox, tabs.size()+1);
-	}
-
 }
