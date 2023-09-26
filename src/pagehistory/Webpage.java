@@ -6,6 +6,7 @@ package pagehistory;
  * 
  * Webpage stores the url of the website and the Webpage object for the next website in the history list. 
  * If next is null, this is the current website.
+ * @deprecated
  */
 public class Webpage {
 	private String url;
