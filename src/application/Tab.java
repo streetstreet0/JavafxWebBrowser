@@ -1,6 +1,7 @@
 package application;
 
 import javafx.event.EventHandler;
+import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebHistory;
@@ -28,7 +29,16 @@ public class Tab {
 	public WebHistory getWebsiteHistory() {
 		return websiteHistory;
 	}
+	public TabButton getTabButton() {
+		return tabButton;
+	}
 	public void setTabButton(TabButton tabButton) {
 		this.tabButton = tabButton;
+	}
+	
+	@Override
+	public String toString() {
+		int index = GridPane.getColumnIndex(tabButton) + 1;
+		return index + ": " + websiteBackEnd.getLocation();
 	}
 }
