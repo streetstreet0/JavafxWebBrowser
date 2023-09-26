@@ -100,15 +100,12 @@ public class Main extends Application {
 			HBox controlPanel = new HBox();
 			controlPanel.getChildren().add(controlPane);
 			
-			WebView websiteVisual = new WebView();
-			websiteVisual.getEngine().load(homePage);
-			
 			backButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.BACK, websiteInputField));
 			forwardButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.FORWARDS, websiteInputField));
 			homeButton.setOnAction(new HomeEventHandler(currentTabStorer, homePage, websiteInputField));
 			reloadButton.setOnAction(new ReloadEventHandler(currentTabStorer, websiteInputField));
 			launchButton.setOnAction(new LoadEventHandler(currentTabStorer, websiteInputField));
-			
+			websiteInputField.setOnKeyPressed(new LoadEnterEventHandler((LoadEventHandler)launchButton.getOnAction()));
 			
 			
 			
@@ -123,10 +120,6 @@ public class Main extends Application {
 			mainBox.setSelectTabBox(selectTabBox);
 			
 			Tab defaultTab = new Tab(homePage);
-			currentTabStorer.setTab(defaultTab);
-			mainBox.setInitialTab(defaultTab);
-			//mainBox.switchTab(defaultTab);
-			
 			
 			GridPane tabPane = new GridPane();
 			mainBox.setTabPane(tabPane);
@@ -150,14 +143,17 @@ public class Main extends Application {
 			
 			mainBox.getChildren().add(controlPanel);
 			mainBox.getChildren().add(tabPanel);
-			mainBox.getChildren().add(websiteVisual);
+			mainBox.setInitialTab(defaultTab);
 			
 			addTabButton.setOnAction(new AddTabEventHandler(mainBox));
+			defaultTabButton.getOnAction().handle(new ActionEvent());
 			
+			WebView webVisual = new WebView();
+			webVisual.getEngine().load(homePage);
 			
 			
 			// apparently growth parameters are important
-			VBox.setVgrow(websiteVisual, Priority.ALWAYS);
+			VBox.setVgrow(defaultTab.getWebsiteVisual(), Priority.ALWAYS);
 			HBox.setHgrow(websiteInputField, Priority.ALWAYS);
 			
 			
