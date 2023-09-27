@@ -1,6 +1,7 @@
 package application;
 
 import javafx.event.EventHandler;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
@@ -13,11 +14,13 @@ public class Tab {
 	private WebHistory websiteHistory;
 	private TabButton tabButton;
 	
-	public Tab(String homePage) {
+	public Tab(String homePage, TextField urlTextField) {
 		this.websiteVisual = new WebView();
 		this.websiteBackEnd = websiteVisual.getEngine();
 		this.websiteHistory = websiteBackEnd.getHistory();
 		websiteBackEnd.load(homePage);
+		websiteVisual.setOnMouseClicked(new MouseClickUrlUpdater(this, urlTextField));
+		websiteVisual.setOnKeyPressed(new EnterKeyUrlUpdater(this, urlTextField));
 	}
 	
 // 	.clone() is not supported in WebView, so this method cannot work

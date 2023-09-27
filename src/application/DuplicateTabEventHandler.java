@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
  * This Class cannot work because tabs cannot be cloned
  */
 public class DuplicateTabEventHandler implements EventHandler<ActionEvent> {
-	private ModifiableObservableTabList tabs;
+	private CustomModifiableObservableList tabs;
 	private Button addTabButton;
 	private GridPane tabPane;
 	private TabVBox mainBox;

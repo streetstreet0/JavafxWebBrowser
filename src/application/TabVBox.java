@@ -12,14 +12,14 @@ import javafx.scene.web.WebView;
 
 public class TabVBox extends VBox {
 	private TabStorer currentTabStorer;
-	private ModifiableObservableTabList tabs;
+	private CustomModifiableObservableList<Tab> tabs;
 	private TextField textField;
 	private GridPane tabPane;
 	private Button addTabButton;
 	private ComboBox<Tab> selectTabBox;
 	private String homePage;
 
-	public TabVBox(TabStorer currentTabStorer, ModifiableObservableTabList tabs, String homePage) {
+	public TabVBox(TabStorer currentTabStorer, CustomModifiableObservableList<Tab> tabs, String homePage) {
 		super();
 		this.currentTabStorer = currentTabStorer;
 		this.tabs = tabs;
@@ -32,10 +32,10 @@ public class TabVBox extends VBox {
 	}
 	
 	
-	public ModifiableObservableTabList getTabs() {
+	public CustomModifiableObservableList<Tab> getTabs() {
 		return tabs;
 	}
-	public void setTabs(ModifiableObservableTabList tabs) {
+	public void setTabs(CustomModifiableObservableList<Tab> tabs) {
 		this.tabs = tabs;
 	}
 

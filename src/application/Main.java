@@ -2,12 +2,14 @@ package application;
 	
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -34,17 +36,19 @@ public class Main extends Application {
 	private static final String imagePath = "images/";
 	private static final String homePage = "https://www.duckduckgo.com";
 	private static final String bookmarksFilePath = "misc/bookmarks";
-	private ModifiableObservableTabList tabsList;
+	private CustomModifiableObservableList<Tab> tabsList;
 	private TabStorer currentTabStorer;
-	private ComboBox<Tab> selectTabBox; 
+	private ComboBox<Tab> selectTabBox;
+	CustomModifiableObservableList<Bookmark> bookmarks;
 	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
+			loadBookmarks(bookmarksFilePath);
 			// initialise these variables now, add their fields to them later
 			currentTabStorer = new TabStorer();
-			tabsList = new ModifiableObservableTabList();
+			tabsList = new CustomModifiableObservableList<Tab>();
 			TabVBox mainBox = new TabVBox(currentTabStorer, tabsList, homePage);
 			
 			
@@ -92,6 +96,12 @@ public class Main extends Application {
 			addBookmarkSymbol.setFitHeight(buttonImageSize);
 			Button addBookmarkButton = new Button("", addBookmarkSymbol);
 			
+			ImageView loadBookmarkSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "loadBookmarkSymbol.png"))));
+			loadBookmarkSymbol.setFitWidth(buttonImageSize);
+			loadBookmarkSymbol.setFitHeight(buttonImageSize);
+			Button loadBookmarkButton = new Button("", loadBookmarkSymbol);
+			
+			
 			GridPane controlPane = new GridPane();
 			controlPane.getChildren().add(backButton);
 			controlPane.getChildren().add(forwardButton);
@@ -100,6 +110,7 @@ public class Main extends Application {
 			controlPane.getChildren().add(websiteInputField);
 			controlPane.getChildren().add(addBookmarkButton);
 			controlPane.getChildren().add(selectTabButton);
+			controlPane.getChildren().add(loadBookmarkButton);
 			GridPane.setColumnIndex(backButton, 0);
 			GridPane.setColumnIndex(forwardButton, 1);
 			GridPane.setColumnIndex(homeButton, 2);
@@ -107,11 +118,13 @@ public class Main extends Application {
 			GridPane.setColumnIndex(websiteInputField, 4);
 			GridPane.setColumnIndex(addBookmarkButton, 5);
 			GridPane.setColumnIndex(selectTabButton, 6);
+			GridPane.setColumnIndex(loadBookmarkButton, 7);
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(600));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			
@@ -136,13 +149,13 @@ public class Main extends Application {
 			
 			
 			
-			Tab defaultTab = new Tab(homePage);
+			Tab defaultTab = new Tab(homePage, websiteInputField);
 			
 			GridPane tabPane = new GridPane();
 			mainBox.setTabPane(tabPane);
 			
 			// default tab must be mad after the tabPane is added the mainBox
-			TabButton defaultTabButton = new TabButton(defaultTab, mainBox);
+			TabButton defaultTabButton = new TabButton(defaultTab, mainBox, websiteInputField);
 			tabsList.add(defaultTabButton.getTab());
 			
 			
@@ -162,14 +175,18 @@ public class Main extends Application {
 			mainBox.getChildren().add(tabPanel);
 			mainBox.setInitialTab(defaultTab);
 			
-			addTabButton.setOnAction(new AddTabEventHandler(mainBox));
+			addTabButton.setOnAction(new AddTabEventHandler(mainBox, websiteInputField));
 			// switches the tab to the default tab
 			defaultTabButton.getOnAction().handle(new ActionEvent());
-			selectTabButton.setOnAction(new SelectTabEventHandler(selectTabBox, primaryStage, currentTabStorer));
-			addBookmarkButton.setOnAction(new BookmarkAddEventHandler(bookmarksFilePath, currentTabStorer, primaryStage));
 			
+			addBookmarkButton.setOnAction(new BookmarkAddEventHandler(bookmarksFilePath, currentTabStorer, primaryStage, bookmarks));
+			selectTabButton.setOnAction(new SelectTabEventHandler(selectTabBox, primaryStage, currentTabStorer));
+			loadBookmarkButton.setOnAction(new LoadBookmarkEventHandler(currentTabStorer, primaryStage, bookmarks));
+			
+			// this webview is here just so the window will be the right size
 			WebView webVisual = new WebView();
 			webVisual.getEngine().load(homePage);
+			
 			
 			
 			// apparently growth parameters are important
@@ -186,6 +203,28 @@ public class Main extends Application {
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void loadBookmarks(String filePath) {
+		bookmarks = new CustomModifiableObservableList<Bookmark>();
+		try {
+			File bookmarksFile = new File(filePath);
+			if (!bookmarksFile.createNewFile()) {
+				Scanner scanner = new Scanner(bookmarksFile);
+				while (scanner.hasNext()) {
+					String bookmarkUrl = scanner.next().trim();
+					String bookmarkName = scanner.nextLine().trim();
+					bookmarks.add(new Bookmark(bookmarkName, bookmarkUrl));
+				}
+				scanner.close();
+			}
+		}
+		catch (IOException error) {
+			Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+			errorAlert.setHeaderText("Error: misc folder does not exist.");
+			errorAlert.setContentText("You will be unable to edit or open bookmarks until this is fixed.");
+			errorAlert.showAndWait();
 		}
 	}
 	

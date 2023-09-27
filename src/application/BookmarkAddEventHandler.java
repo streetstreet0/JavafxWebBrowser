@@ -20,24 +20,21 @@ public class BookmarkAddEventHandler implements EventHandler<ActionEvent> {
 	private File bookmarksFile;
 	private TabStorer currentTabStorer;
 	private Stage owner;
+	private CustomModifiableObservableList<Bookmark> bookmarks;
 	
-	public BookmarkAddEventHandler(String bookmarksFileName, TabStorer currentTabStorer, Stage owner) {
+	public BookmarkAddEventHandler(String bookmarksFileName, TabStorer currentTabStorer, Stage owner, CustomModifiableObservableList<Bookmark> bookmarks) {
 		this.bookmarksFile = new File(bookmarksFileName);
 		this.currentTabStorer = currentTabStorer;
 		this.owner = owner;
+		this.bookmarks = bookmarks;
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
 		try {
 			ArrayList<String> outputStrings = new ArrayList<String>();
-			
-			if (!bookmarksFile.createNewFile()) {
-				Scanner scanner = new Scanner(bookmarksFile);
-				while (scanner.hasNext()) {
-					outputStrings.add(scanner.nextLine());
-				}
-				scanner.close();
+			for (Bookmark bookmark : bookmarks) {
+				outputStrings.add(bookmark.getUrl() + " " + bookmark.getName());
 			}
 			
 			String bookmarkUrl = currentTabStorer.getTab().getWebsiteBackEnd().getLocation();
@@ -48,7 +45,7 @@ public class BookmarkAddEventHandler implements EventHandler<ActionEvent> {
 			}
 			
 			outputStrings.add(bookmarkUrl + " " + bookmarkName);
-			
+			bookmarks.add(new Bookmark(bookmarkName, bookmarkUrl));
 			
 			PrintStream outputStream = new PrintStream(bookmarksFile);
 			for (String outputString : outputStrings) {

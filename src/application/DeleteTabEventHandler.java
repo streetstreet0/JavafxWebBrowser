@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -13,17 +14,17 @@ public class DeleteTabEventHandler implements EventHandler<ActionEvent> {
 	private GridPane tabPane;
 	private Button addTabButton;
 	private ComboBox<Tab> selectTabBox;
-	private ModifiableObservableTabList tabs;
+	private CustomModifiableObservableList<Tab> tabs;
 	private AddTabEventHandler addTabHandler;
 	
-	public DeleteTabEventHandler(Tab tab, TabVBox mainBox) {
+	public DeleteTabEventHandler(Tab tab, TabVBox mainBox, TextField urlInputField) {
 		this.tab = tab;
 		this.mainBox = mainBox;
 		this.tabPane = mainBox.getTabPane();
 		this.addTabButton = mainBox.getAddTabButton();
 		this.selectTabBox = mainBox.getSelectTabBox();
 		this.tabs = mainBox.getTabs();
-		this.addTabHandler = new AddTabEventHandler(mainBox);
+		this.addTabHandler = new AddTabEventHandler(mainBox, urlInputField);
 	}
 	
 
