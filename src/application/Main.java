@@ -35,7 +35,8 @@ public class Main extends Application {
 	private static final String homePage = "https://www.duckduckgo.com";
 	private static final String bookmarksFilePath = "misc/bookmarks";
 	private ModifiableObservableTabList tabsList;
-	public TabStorer currentTabStorer;
+	private TabStorer currentTabStorer;
+	private ComboBox<Tab> selectTabBox; 
 	
 	
 	@Override
@@ -77,7 +78,12 @@ public class Main extends Application {
 //			Button launchButton = new Button();
 //			launchButton.setText("launch");
 			
-			ComboBox<Tab> selectTabBox = new ComboBox<Tab>(tabsList);
+			ImageView selectTabSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "selectTabSymbol.png"))));
+			selectTabSymbol.setFitWidth(buttonImageSize);
+			selectTabSymbol.setFitHeight(buttonImageSize);
+			Button selectTabButton = new Button("", selectTabSymbol);
+			
+			selectTabBox = new ComboBox<Tab>(tabsList);
 			selectTabBox.setPromptText("select tab:");
 			mainBox.setSelectTabBox(selectTabBox);
 			
@@ -93,20 +99,21 @@ public class Main extends Application {
 			controlPane.getChildren().add(reloadButton);
 			controlPane.getChildren().add(websiteInputField);
 			controlPane.getChildren().add(addBookmarkButton);
-			controlPane.getChildren().add(selectTabBox);
+			controlPane.getChildren().add(selectTabButton);
 			GridPane.setColumnIndex(backButton, 0);
 			GridPane.setColumnIndex(forwardButton, 1);
 			GridPane.setColumnIndex(homeButton, 2);
 			GridPane.setColumnIndex(reloadButton, 3);
 			GridPane.setColumnIndex(websiteInputField, 4);
 			GridPane.setColumnIndex(addBookmarkButton, 5);
-			GridPane.setColumnIndex(selectTabBox, 6);
+			GridPane.setColumnIndex(selectTabButton, 6);
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(600));
-			controlPane.getColumnConstraints().add(new ColumnConstraints(80));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			
 			
 			HBox controlPanel = new HBox();
@@ -158,8 +165,8 @@ public class Main extends Application {
 			addTabButton.setOnAction(new AddTabEventHandler(mainBox));
 			// switches the tab to the default tab
 			defaultTabButton.getOnAction().handle(new ActionEvent());
-			selectTabBox.setOnAction(new MasterChangeTabEventHandler(selectTabBox, currentTabStorer));
-			addBookmarkButton.setOnAction(new BookmarkAddEventHandler(bookmarksFilePath, currentTabStorer));
+			selectTabButton.setOnAction(new SelectTabEventHandler(selectTabBox, primaryStage, currentTabStorer));
+			addBookmarkButton.setOnAction(new BookmarkAddEventHandler(bookmarksFilePath, currentTabStorer, primaryStage));
 			
 			WebView webVisual = new WebView();
 			webVisual.getEngine().load(homePage);

@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 
+/**
+ * @deprecated
+ */
 public class MasterChangeTabEventHandler implements EventHandler<ActionEvent> {
 	private ComboBox<Tab> selectTabBox;
 	private TabStorer currentTabStorer;
