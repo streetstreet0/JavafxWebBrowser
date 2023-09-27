@@ -26,6 +26,7 @@ public class LoadBookmarkEventHandler implements EventHandler<ActionEvent> {
 		selectBookmarkAlert = new Alert(Alert.AlertType.CONFIRMATION);
 		VBox selectTabVBox = new VBox();
 		bookmarkBox = new ComboBox<Bookmark>(bookmarks);
+		bookmarkBox.setPromptText("Select Bookmark");
 		selectTabVBox.getChildren().add(bookmarkBox);
 		selectBookmarkAlert.setTitle("Select Bookmark");
 		selectBookmarkAlert.setHeaderText("");
