@@ -17,18 +17,23 @@ public class TabVBox extends VBox {
 	private GridPane tabPane;
 	private Button addTabButton;
 	private ComboBox<Tab> selectTabBox;
-	private String homePage;
+	private HomePageStorer homePageStorer;
+	private double zoom;
 
-	public TabVBox(TabStorer currentTabStorer, CustomModifiableObservableList<Tab> tabs, String homePage) {
+	public TabVBox(TabStorer currentTabStorer, CustomModifiableObservableList<Tab> tabs, HomePageStorer homePageStorer) {
 		super();
 		this.currentTabStorer = currentTabStorer;
 		this.tabs = tabs;
-		this.homePage = homePage;
+		this.homePageStorer = homePageStorer;
+		this.zoom = 1;
 	}
 	
 	
+	public HomePageStorer getHomePageStorer() {
+		return homePageStorer;
+	}
 	public String getHomePage() {
-		return homePage;
+		return homePageStorer.getHomePage();
 	}
 	
 	
@@ -69,6 +74,14 @@ public class TabVBox extends VBox {
 	}
 	public void setSelectTabBox(ComboBox<Tab> selectTabBox) {
 		this.selectTabBox = selectTabBox;
+	}
+	
+	
+	public double getZoom() {
+		return zoom;
+	}
+	public void setZoom(double newZoom) {
+		this.zoom = newZoom;
 	}
 	
 	

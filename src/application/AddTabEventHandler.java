@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 
 public class AddTabEventHandler implements EventHandler<ActionEvent> {
 	private CustomModifiableObservableList<Tab> tabs;
-	private String homePage;
+	private HomePageStorer homePageStorer;
 	private Button addTabButton;
 	private GridPane tabPane;
 	private TabVBox mainBox;
@@ -20,7 +20,7 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 
 	public AddTabEventHandler(TabVBox mainBox, TextField urlTextField) {
 		this.urlTextField = urlTextField;
-		this.homePage = mainBox.getHomePage();
+		this.homePageStorer = mainBox.getHomePageStorer();
 		this.addTabButton = mainBox.getAddTabButton();
 		this.tabPane = mainBox.getTabPane();
 		this.mainBox = mainBox;
@@ -30,7 +30,8 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		Tab newTab = new Tab(homePage, urlTextField);
+		Tab newTab = new Tab(homePageStorer.getHomePage(), urlTextField);
+		newTab.getWebsiteVisual().setZoom(mainBox.getZoom());
 		// tabButton automatically assigns itself at newTab's button
 		TabButton tabButton = new TabButton(newTab, mainBox, urlTextField);
 		tabPane.getChildren().add(tabButton);
