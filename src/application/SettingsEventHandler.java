@@ -4,13 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class SettingsEventHandler implements EventHandler<ActionEvent> {
@@ -32,7 +30,7 @@ public class SettingsEventHandler implements EventHandler<ActionEvent> {
 	}
 	
 	public void generateAlert() {
-		settingsAlert = new Alert(Alert.AlertType.CONFIRMATION);
+		settingsAlert = new Alert(Alert.AlertType.INFORMATION);
 		
 		GridPane zoomPane = new GridPane();
 		Button zoomOutButton = new Button("-");
@@ -61,15 +59,15 @@ public class SettingsEventHandler implements EventHandler<ActionEvent> {
 		homePagePane.getChildren().add(setHomePageButton);
 		GridPane.setColumnIndex(homePageField, 0);
 		GridPane.setColumnIndex(setHomePageButton, 1);
-		zoomPane.getColumnConstraints().add(new ColumnConstraints(100));
-		zoomPane.getColumnConstraints().add(new ColumnConstraints(50));
+		homePagePane.getColumnConstraints().add(new ColumnConstraints(300));
+		homePagePane.getColumnConstraints().add(new ColumnConstraints(150));
 		
-		setHomePageButton.setOnAction(null);
+		setHomePageButton.setOnAction(new ChangeHomepageEventHandler(mainBox, homePageField));
 		
 		
 		VBox selectTabVBox = new VBox();
 		selectTabVBox.getChildren().add(zoomPane);
-		selectTabVBox.getChildren().add(homePageField);
+		selectTabVBox.getChildren().add(homePagePane);
 		
 		settingsAlert.setTitle("Settings");
 		settingsAlert.setHeaderText("");

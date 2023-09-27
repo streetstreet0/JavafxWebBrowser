@@ -35,6 +35,9 @@ public class TabVBox extends VBox {
 	public String getHomePage() {
 		return homePageStorer.getHomePage();
 	}
+	public void setHomePage(String homePage) {
+		homePageStorer.setHomePage(homePage);
+	}
 	
 	
 	public CustomModifiableObservableList<Tab> getTabs() {
