@@ -34,7 +34,8 @@ public class Main extends Application {
 	private static final double buttonImageSize = 10;
 	private static final double buttonSize = 30;
 	private static final String imagePath = "images/";
-	private static final String homePage = "https://www.duckduckgo.com";
+	private static final String defaultHomePage = "https://www.duckduckgo.com";
+	private HomePageStorer homePageStorer;
 	private static final String bookmarksFilePath = "misc/bookmarks";
 	private CustomModifiableObservableList<Tab> tabsList;
 	private TabStorer currentTabStorer;
@@ -46,10 +47,11 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			loadBookmarks(bookmarksFilePath);
+			homePageStorer = new HomePageStorer(defaultHomePage);
 			// initialise these variables now, add their fields to them later
 			currentTabStorer = new TabStorer();
 			tabsList = new CustomModifiableObservableList<Tab>();
-			TabVBox mainBox = new TabVBox(currentTabStorer, tabsList, homePage);
+			TabVBox mainBox = new TabVBox(currentTabStorer, tabsList, homePageStorer);
 			
 			
 			
@@ -150,11 +152,12 @@ public class Main extends Application {
 			
 			backButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.BACK, websiteInputField));
 			forwardButton.setOnAction(new HistoryEventHandler(currentTabStorer, Direction.FORWARDS, websiteInputField));
-			homeButton.setOnAction(new HomeEventHandler(currentTabStorer, homePage, websiteInputField));
+			homeButton.setOnAction(new HomeEventHandler(currentTabStorer, homePageStorer, websiteInputField));
 			reloadButton.setOnAction(new ReloadEventHandler(currentTabStorer, websiteInputField));
 //			launchButton.setOnAction(new LoadEventHandler(currentTabStorer, websiteInputField));
 //			websiteInputField.setOnKeyPressed(new LoadEnterEventHandler((LoadEventHandler)launchButton.getOnAction()));
 			websiteInputField.setOnKeyPressed(new LoadEnterEventHandler(new LoadEventHandler(currentTabStorer, websiteInputField)));
+			settingsButton.setOnAction(new SettingsEventHandler(primaryStage, mainBox, buttonSize));
 			
 			
 			ImageView addTabSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "addTabSymbol.png"))));
@@ -165,7 +168,7 @@ public class Main extends Application {
 			
 			
 			
-			Tab defaultTab = new Tab(homePage, websiteInputField);
+			Tab defaultTab = new Tab(defaultHomePage, websiteInputField);
 			
 			GridPane tabPane = new GridPane();
 			mainBox.setTabPane(tabPane);
@@ -199,7 +202,7 @@ public class Main extends Application {
 			
 			// this webview is here just so the window will be the right size
 			WebView webVisual = new WebView();
-			webVisual.getEngine().load(homePage);
+			webVisual.getEngine().load(defaultHomePage);
 			
 			
 			
