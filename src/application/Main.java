@@ -88,7 +88,7 @@ public class Main extends Application {
 			Button selectTabButton = new Button("", selectTabSymbol);
 			
 			selectTabBox = new ComboBox<Tab>(tabsList);
-			selectTabBox.setPromptText("select tab:");
+			selectTabBox.setPromptText("Select Tab");
 			mainBox.setSelectTabBox(selectTabBox);
 			
 			ImageView addBookmarkSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "addBookmarkSymbol.png"))));
@@ -101,6 +101,15 @@ public class Main extends Application {
 			loadBookmarkSymbol.setFitHeight(buttonImageSize);
 			Button loadBookmarkButton = new Button("", loadBookmarkSymbol);
 			
+			ImageView historySymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "historySymbol.png"))));
+			historySymbol.setFitWidth(buttonImageSize);
+			historySymbol.setFitHeight(buttonImageSize);
+			Button historyButton = new Button("", historySymbol);
+			
+			ImageView settingsSymbol = new ImageView(new Image(new FileInputStream(new File(imagePath + "settingsSymbol.png"))));
+			settingsSymbol.setFitWidth(buttonImageSize);
+			settingsSymbol.setFitHeight(buttonImageSize);
+			Button settingsButton = new Button("", settingsSymbol);
 			
 			GridPane controlPane = new GridPane();
 			controlPane.getChildren().add(backButton);
@@ -111,6 +120,8 @@ public class Main extends Application {
 			controlPane.getChildren().add(addBookmarkButton);
 			controlPane.getChildren().add(selectTabButton);
 			controlPane.getChildren().add(loadBookmarkButton);
+			controlPane.getChildren().add(historyButton);
+			controlPane.getChildren().add(settingsButton);
 			GridPane.setColumnIndex(backButton, 0);
 			GridPane.setColumnIndex(forwardButton, 1);
 			GridPane.setColumnIndex(homeButton, 2);
@@ -119,11 +130,16 @@ public class Main extends Application {
 			GridPane.setColumnIndex(addBookmarkButton, 5);
 			GridPane.setColumnIndex(selectTabButton, 6);
 			GridPane.setColumnIndex(loadBookmarkButton, 7);
+			GridPane.setColumnIndex(historyButton, 8);
+			GridPane.setColumnIndex(settingsButton, 9);
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(600));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
+			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
 			controlPane.getColumnConstraints().add(new ColumnConstraints(buttonSize));
@@ -161,10 +177,8 @@ public class Main extends Application {
 			
 			tabPane.getChildren().add(defaultTabButton);
 			tabPane.getChildren().add(addTabButton);
-			//tabPane.getChildren().add(selectTabBox);
 			GridPane.setColumnIndex(defaultTabButton, 0);
 			GridPane.setColumnIndex(addTabButton, 1);
-			//GridPane.setColumnIndex(selectTabBox, 2);
 			
 			
 			HBox tabPanel = new HBox();
