@@ -11,9 +11,9 @@ import javafx.scene.web.WebHistory.Entry;
 
 public class TabButton extends Button {
 	private Tab tab;
-	private ObservableList<Entry> history;
+	private CustomModifiableObservableList<HistoryItem> history;
 	
-	public TabButton(Tab tab, TabVBox mainBox, TextField urlTextField, ObservableList<Entry> history) {
+	public TabButton(Tab tab, TabVBox mainBox, TextField urlTextField, CustomModifiableObservableList<HistoryItem> history) {
 		this.tab = tab;
 		this.history = history;
 		tab.setTabButton(this);

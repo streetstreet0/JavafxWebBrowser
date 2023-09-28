@@ -19,9 +19,9 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 	private TabVBox mainBox;
 	private ComboBox<Tab> selectTabBox;
 	private TextField urlTextField;
-	private ObservableList<WebHistory.Entry> history;
+	private CustomModifiableObservableList<HistoryItem> history;
 
-	public AddTabEventHandler(TabVBox mainBox, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
+	public AddTabEventHandler(TabVBox mainBox, TextField urlTextField, CustomModifiableObservableList<HistoryItem> history) {
 		this.urlTextField = urlTextField;
 		this.history = history;
 		this.homePageStorer = mainBox.getHomePageStorer();

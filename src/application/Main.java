@@ -42,14 +42,14 @@ public class Main extends Application {
 	private TabStorer currentTabStorer;
 	private ComboBox<Tab> selectTabBox;
 	private CustomModifiableObservableList<Bookmark> bookmarks;
-	private ObservableList<WebHistory.Entry> history;
+	private CustomModifiableObservableList<HistoryItem> history;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			loadBookmarks(bookmarksFilePath);
 			homePageStorer = new HomePageStorer(defaultHomePage);
-			history = new CustomModifiableObservableList<WebHistory.Entry>();
+			history = new CustomModifiableObservableList<HistoryItem>();
 			// initialise these variables now, add their fields to them later
 			currentTabStorer = new TabStorer();
 			tabsList = new CustomModifiableObservableList<Tab>();
@@ -201,6 +201,7 @@ public class Main extends Application {
 			addBookmarkButton.setOnAction(new BookmarkAddEventHandler(bookmarksFilePath, currentTabStorer, primaryStage, bookmarks));
 			selectTabButton.setOnAction(new SelectTabEventHandler(selectTabBox, primaryStage, currentTabStorer));
 			loadBookmarkButton.setOnAction(new LoadBookmarkEventHandler(currentTabStorer, primaryStage, bookmarks));
+			historyButton.setOnAction(new LoadHistoryEventHandler(currentTabStorer, history));
 			
 			// this webview is here just so the window will be the right size
 			WebView webVisual = new WebView();

@@ -19,9 +19,9 @@ public class AltClickTabEventHandler implements EventHandler<MouseEvent> {
 	private CustomModifiableObservableList tabs;
 	private AddTabEventHandler addTabHandler;
 	private TextField urlTextField;
-	private ObservableList<WebHistory.Entry> history;
+	private CustomModifiableObservableList<HistoryItem> history;
 	
-	public AltClickTabEventHandler(Tab tab, TabVBox mainBox, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
+	public AltClickTabEventHandler(Tab tab, TabVBox mainBox, TextField urlTextField, CustomModifiableObservableList<HistoryItem> history) {
 		this.urlTextField = urlTextField;
 		this.history = history;
 		this.tab = tab;
