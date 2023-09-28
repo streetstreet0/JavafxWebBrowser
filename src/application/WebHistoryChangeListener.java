@@ -7,10 +7,10 @@ import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebHistory.Entry;
 
 public class WebHistoryChangeListener implements ListChangeListener<WebHistory.Entry> {
-	private ObservableList<WebHistory.Entry> history;
+	private CustomModifiableObservableList<HistoryItem> history;
 	private TextField urlTextField;
 
-	public WebHistoryChangeListener(ObservableList<Entry> history, TextField urlTextField) {
+	public WebHistoryChangeListener(CustomModifiableObservableList<HistoryItem> history, TextField urlTextField) {
 		this.history = history;
 		this.urlTextField = urlTextField;
 	}
@@ -22,14 +22,14 @@ public class WebHistoryChangeListener implements ListChangeListener<WebHistory.E
 			return;
 		}
 		WebHistory.Entry newPage = change.getAddedSubList().get(0);
-		if (history.contains(newPage)) {
-			history.remove(newPage);
+		HistoryItem newPageItem = new HistoryItem(newPage);
+		if (history.contains(newPageItem)) {
+			history.remove(newPageItem);
 		}
-		history.add(newPage);
+		history.add(newPageItem);
 		if (true) {
 			urlTextField.setText(newPage.getUrl());
 		}
-		System.out.println(history.size());
 	}
 
 }

@@ -19,7 +19,7 @@ public class DeleteTabEventHandler implements EventHandler<ActionEvent> {
 	private CustomModifiableObservableList<Tab> tabs;
 	private AddTabEventHandler addTabHandler;
 	
-	public DeleteTabEventHandler(Tab tab, TabVBox mainBox, TextField urlInputField, ObservableList<WebHistory.Entry> history) {
+	public DeleteTabEventHandler(Tab tab, TabVBox mainBox, TextField urlInputField, CustomModifiableObservableList<HistoryItem> history) {
 		this.tab = tab;
 		this.mainBox = mainBox;
 		this.tabPane = mainBox.getTabPane();

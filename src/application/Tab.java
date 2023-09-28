@@ -17,7 +17,7 @@ public class Tab {
 	private WebHistory websiteHistory;
 	private TabButton tabButton;
 	
-	public Tab(String homePage, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
+	public Tab(String homePage, TextField urlTextField, CustomModifiableObservableList<HistoryItem> history) {
 		this.websiteVisual = new WebView();
 		this.websiteBackEnd = websiteVisual.getEngine();
 		this.websiteHistory = websiteBackEnd.getHistory();
