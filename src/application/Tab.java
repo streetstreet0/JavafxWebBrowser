@@ -23,7 +23,7 @@ public class Tab {
 		this.websiteHistory = websiteBackEnd.getHistory();
 //		websiteVisual.setOnMouseClicked(new MouseClickUrlUpdater(this, urlTextField));
 //		websiteVisual.setOnKeyPressed(new EnterKeyUrlUpdater(this, urlTextField));
-		websiteHistory.getEntries().addListener(new WebHistoryChangeListener(history, urlTextField, this));
+		websiteHistory.getEntries().addListener(new WebHistoryChangeListener(history, urlTextField));
 		websiteBackEnd.load(homePage);
 	}
 	

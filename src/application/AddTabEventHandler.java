@@ -37,7 +37,7 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 		Tab newTab = new Tab(homePageStorer.getHomePage(), urlTextField, history);
 		newTab.getWebsiteVisual().setZoom(mainBox.getZoom());
 		// tabButton automatically assigns itself at newTab's button
-		TabButton tabButton = new TabButton(newTab, mainBox, urlTextField);
+		TabButton tabButton = new TabButton(newTab, mainBox, urlTextField, history);
 		tabPane.getChildren().add(tabButton);
 		// need to add newTab to the list after setting its column index
 		GridPane.setColumnIndex(tabButton, tabs.size());
