@@ -1,11 +1,14 @@
 package application;
 
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebHistory;
+import javafx.scene.web.WebHistory.Entry;
 import javafx.scene.web.WebView;
 
 public class Tab {
@@ -14,13 +17,14 @@ public class Tab {
 	private WebHistory websiteHistory;
 	private TabButton tabButton;
 	
-	public Tab(String homePage, TextField urlTextField) {
+	public Tab(String homePage, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
 		this.websiteVisual = new WebView();
 		this.websiteBackEnd = websiteVisual.getEngine();
 		this.websiteHistory = websiteBackEnd.getHistory();
+//		websiteVisual.setOnMouseClicked(new MouseClickUrlUpdater(this, urlTextField));
+//		websiteVisual.setOnKeyPressed(new EnterKeyUrlUpdater(this, urlTextField));
+		websiteHistory.getEntries().addListener(new WebHistoryChangeListener(history, urlTextField, this));
 		websiteBackEnd.load(homePage);
-		websiteVisual.setOnMouseClicked(new MouseClickUrlUpdater(this, urlTextField));
-		websiteVisual.setOnKeyPressed(new EnterKeyUrlUpdater(this, urlTextField));
 	}
 	
 // 	.clone() is not supported in WebView, so this method cannot work

@@ -2,6 +2,7 @@ package application;
 	
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -40,14 +41,15 @@ public class Main extends Application {
 	private CustomModifiableObservableList<Tab> tabsList;
 	private TabStorer currentTabStorer;
 	private ComboBox<Tab> selectTabBox;
-	CustomModifiableObservableList<Bookmark> bookmarks;
-	
+	private CustomModifiableObservableList<Bookmark> bookmarks;
+	private ObservableList<WebHistory.Entry> history;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
 			loadBookmarks(bookmarksFilePath);
 			homePageStorer = new HomePageStorer(defaultHomePage);
+			history = new CustomModifiableObservableList<WebHistory.Entry>();
 			// initialise these variables now, add their fields to them later
 			currentTabStorer = new TabStorer();
 			tabsList = new CustomModifiableObservableList<Tab>();
@@ -168,13 +170,13 @@ public class Main extends Application {
 			
 			
 			
-			Tab defaultTab = new Tab(defaultHomePage, websiteInputField);
+			Tab defaultTab = new Tab(defaultHomePage, websiteInputField, history);
 			
 			GridPane tabPane = new GridPane();
 			mainBox.setTabPane(tabPane);
 			
 			// default tab must be mad after the tabPane is added the mainBox
-			TabButton defaultTabButton = new TabButton(defaultTab, mainBox, websiteInputField);
+			TabButton defaultTabButton = new TabButton(defaultTab, mainBox, websiteInputField, history);
 			tabsList.add(defaultTabButton.getTab());
 			
 			
@@ -192,7 +194,7 @@ public class Main extends Application {
 			mainBox.getChildren().add(tabPanel);
 			mainBox.setInitialTab(defaultTab);
 			
-			addTabButton.setOnAction(new AddTabEventHandler(mainBox, websiteInputField));
+			addTabButton.setOnAction(new AddTabEventHandler(mainBox, websiteInputField, history));
 			// switches the tab to the default tab
 			defaultTabButton.getOnAction().handle(new ActionEvent());
 			
