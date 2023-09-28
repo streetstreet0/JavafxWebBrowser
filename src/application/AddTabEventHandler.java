@@ -2,12 +2,14 @@ package application;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebHistory;
 
 public class AddTabEventHandler implements EventHandler<ActionEvent> {
 	private CustomModifiableObservableList<Tab> tabs;
@@ -17,9 +19,11 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 	private TabVBox mainBox;
 	private ComboBox<Tab> selectTabBox;
 	private TextField urlTextField;
+	private ObservableList<WebHistory.Entry> history;
 
-	public AddTabEventHandler(TabVBox mainBox, TextField urlTextField) {
+	public AddTabEventHandler(TabVBox mainBox, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
 		this.urlTextField = urlTextField;
+		this.history = history;
 		this.homePageStorer = mainBox.getHomePageStorer();
 		this.addTabButton = mainBox.getAddTabButton();
 		this.tabPane = mainBox.getTabPane();
@@ -30,7 +34,7 @@ public class AddTabEventHandler implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-		Tab newTab = new Tab(homePageStorer.getHomePage(), urlTextField);
+		Tab newTab = new Tab(homePageStorer.getHomePage(), urlTextField, history);
 		newTab.getWebsiteVisual().setZoom(mainBox.getZoom());
 		// tabButton automatically assigns itself at newTab's button
 		TabButton tabButton = new TabButton(newTab, mainBox, urlTextField);

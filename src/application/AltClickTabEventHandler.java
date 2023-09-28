@@ -1,5 +1,6 @@
 package application;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebHistory;
 
 public class AltClickTabEventHandler implements EventHandler<MouseEvent> {
 	private Tab tab;
@@ -17,23 +19,25 @@ public class AltClickTabEventHandler implements EventHandler<MouseEvent> {
 	private CustomModifiableObservableList tabs;
 	private AddTabEventHandler addTabHandler;
 	private TextField urlTextField;
+	private ObservableList<WebHistory.Entry> history;
 	
-	public AltClickTabEventHandler(Tab tab, TabVBox mainBox, TextField urlTextField) {
+	public AltClickTabEventHandler(Tab tab, TabVBox mainBox, TextField urlTextField, ObservableList<WebHistory.Entry> history) {
 		this.urlTextField = urlTextField;
+		this.history = history;
 		this.tab = tab;
 		this.mainBox = mainBox;
 		this.tabPane = mainBox.getTabPane();
 		this.addTabButton = mainBox.getAddTabButton();
 		this.selectTabBox = mainBox.getSelectTabBox();
 		this.tabs = mainBox.getTabs();
-		this.addTabHandler = new AddTabEventHandler(mainBox, urlTextField);
+		this.addTabHandler = new AddTabEventHandler(mainBox, urlTextField, history);
 	}
 	
 
 	@Override
 	public void handle(MouseEvent event) {
 		if (event.getButton().toString().equals("MIDDLE")) {
-			new DeleteTabEventHandler(tab, mainBox, urlTextField).handle(new ActionEvent());
+			new DeleteTabEventHandler(tab, mainBox, urlTextField, history).handle(new ActionEvent());
 		}
 		else if (event.getButton().toString().equals("SECONDARY")) {
 			TabButton tabButton = tab.getTabButton();
