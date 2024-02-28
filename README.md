@@ -1,7 +1,13 @@
+### Summary
+
 This was a project I did during my Masters of Software Development.   
 This project is a basic web browser created in javafx.
 
-### Running notes
+### Disclaimer
+
+The project was made early into the degree and hasn't been worked on since.
+
+### Running Notes
 
 Need to delete default build file when starting new javafx project.
 
